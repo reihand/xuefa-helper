@@ -20,6 +20,23 @@ question-bank-fetcher.exe  → 题库采集器.exe         双击更新题库，
 速查助手启动后优先读同目录 `questions.json`，没有就用内置题库。
 三个页签：速查 / 考试范围 / 使用说明。支持手动粘贴、剪贴板监听、窗口置顶、Esc 最小化。
 
+## UOS / 统信 arm64
+
+Windows exe 不能在这类系统上运行。Releases 里提供纯 Python 离线包，不分 CPU 架构，
+目标机只要有 Python 3.7+ 和浏览器，不需要安装第三方库。
+
+```bash
+sh 学法用法速查助手_UOS_arm64.run        # 自解压到当前目录的 xuefa-uos-arm64/
+sh xuefa-uos-arm64/启动速查.sh           # 自动打开本地浏览器页面
+sh xuefa-uos-arm64/命令行查询.sh "题干"   # 不开浏览器，直接出答案
+sh xuefa-uos-arm64/生成桌面快捷方式.sh    # 桌面图标
+sh xuefa-uos-arm64/自检.sh               # 预期第一行含 1.000 | Q9924 | C
+```
+
+也可以下载 `.tar.gz` 手动解压。页面支持粘贴整题、关键词模糊查、答案与依据展示、
+382 部法规浏览、Excel 导入补库。服务只监听 127.0.0.1，题库不出本机。
+源码在 `src/webui.py`，打包命令 `python build_uos.py`。
+
 ## 源码运行
 
 需要带 tkinter 的 Python 3.10+（Windows 上推荐 Python 3.13）。
@@ -63,7 +80,8 @@ python tools/import_docx.py 我的题库.docx
 ```
 src/
   main.py            入口与 --selftest / --import
-  ui.py              tkinter 界面
+  ui.py              tkinter 界面（Windows）
+  webui.py           本地浏览器界面（UOS / Linux，纯标准库）
   bank.py            2-gram 倒排 + difflib 精排 + 选项一致性加权
   clipboard.py       GetClipboardSequenceNumber 变化检测
   paths.py           源码态 / _MEIPASS 态资源路径
@@ -77,7 +95,7 @@ tools/
   import_docx.py           Word 题库解析
   build_bank.py            初始题库生成
 tests/                     21 项单元测试与夹具
-build.py / build_fetcher.py
+build.py / build_fetcher.py / build_uos.py
 ```
 
 ## 数据说明
