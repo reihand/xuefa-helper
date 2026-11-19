@@ -16,6 +16,10 @@ backup/
 tools/cache/_frozen_test/
 tools/_probe/
 
+# 浏览器验证临时文件
+dist/_test_*.html
+dist/_standalone_*.png
+
 # 会话凭证、日志、个人信息残留
 *token*.txt
 *cookie*.txt

@@ -5,7 +5,21 @@
 
 - 速查助手：纯标准库、零第三方依赖、纯离线，打包成单文件 exe
 - 题库采集器：需要联网和已登录的浏览器会话，单独打包
+- 单文件版：一个 HTML 文件装下页面 + 检索 + 全题库，双击浏览器打开，零安装、跨 Windows / UOS / macOS
 - 内置题库 10196 道（单选 5187 / 多选 2553 / 判断 2456），附件3 法规清单 382 部
+
+## 最省事：单文件 HTML
+
+Releases 下载 `xuefa-helper-standalone.html`，改名成 `学法用法速查助手.html`，
+发到微信 / QQ / UOS 都行，对方双击用浏览器打开即可。不需要装 Python、不需要终端、不需要联网。
+
+- 粘贴整题或关键词自动查询，答案、选项、法条依据、解析同屏显示
+- 一键复制答案；粘贴了选项时会按选项文本区分「题干相同、选项顺序不同」的题
+- 检索逻辑用 JavaScript 重写，和 Python 版同一套算法（2-gram 倒排 + LCS 精排 + 选项一致性加权）
+- 题库全部内嵌在文件里，页面不向外发请求
+
+单文件版不能把新题写回自身，需要 Excel 补库请用下面的 Windows exe 版或 UOS 版。
+自己重新生成：`python tools/build_standalone_html.py`，产物在 `dist/学法用法速查助手_单文件.html`（约 6.7 MB）。
 
 ## 快速开始
 
@@ -94,6 +108,9 @@ tools/
   import_bank.py           Excel / JSON 补库
   import_docx.py           Word 题库解析
   build_bank.py            初始题库生成
+  standalone_search.js     浏览器版检索核心（与 bank.py 同算法）
+  standalone_template.html 单文件版页面模板
+  build_standalone_html.py 单文件 HTML 构建脚本
 tests/                     21 项单元测试与夹具
 build.py / build_fetcher.py / build_uos.py
 ```

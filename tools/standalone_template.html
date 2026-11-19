@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>学法用法速查助手 · 单文件离线版</title>
+<style>
+:root{--bg:#f5f7fa;--card:#fff;--line:#dfe4ea;--text:#1f2933;--muted:#6b7280;--green:#0a7d3f;--orange:#b45309;--blue:#1d4ed8;--shadow:0 1px 3px rgba(16,24,40,.06)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font:15px/1.65 -apple-system,BlinkMacSystemFont,"Noto Sans CJK SC","Microsoft YaHei","PingFang SC",sans-serif}
+header{background:#fff;border-bottom:1px solid var(--line);padding:14px 20px;position:sticky;top:0;z-index:5;box-shadow:var(--shadow)}
+h1{font-size:19px;margin:0 0 2px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+h1 .tag{font-size:12px;font-weight:500;color:var(--blue);background:#eff6ff;border:1px solid #bfdbfe;border-radius:5px;padding:1px 8px}
+.sub{color:var(--muted);font-size:13px}
+.wrap{max-width:1200px;margin:0 auto;padding:18px}
+.tabs{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap}
+.tab{border:1px solid var(--line);background:#fff;border-radius:8px;padding:7px 16px;cursor:pointer;color:var(--text);font:inherit;font-size:14px}
+.tab:hover{border-color:var(--blue);color:var(--blue)}
+.tab.on{background:var(--blue);color:#fff;border-color:var(--blue)}
+.panel{display:none}.panel.on{display:block}
+.searchbar{display:flex;gap:8px;margin-bottom:12px}
+textarea{flex:1;border:1px solid var(--line);border-radius:8px;padding:10px 12px;font:inherit;background:#fff;color:var(--text);min-height:48px;resize:vertical}
+input[type=text]{flex:1;border:1px solid var(--line);border-radius:8px;padding:10px 12px;font:inherit;background:#fff;color:var(--text);min-width:0}
+button{border:1px solid var(--line);background:#fff;border-radius:8px;padding:9px 16px;cursor:pointer;color:var(--text);font:inherit;white-space:nowrap}
+button:hover{border-color:var(--blue);color:var(--blue)}
+button.primary{background:var(--blue);color:#fff;border-color:var(--blue)}
+button.primary:hover{background:#1e40af;color:#fff}
+.grid{display:grid;grid-template-columns:minmax(280px,42%) 1fr;gap:14px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px;min-height:320px;box-shadow:var(--shadow)}
+.list{list-style:none;margin:0;padding:0;max-height:70vh;overflow:auto}
+.list li{border-bottom:1px solid var(--line);padding:10px 8px;cursor:pointer;border-radius:4px}
+.list li:hover{background:#f0f5ff}
+.list li.sel{background:#e8f0fe;border-left:3px solid var(--blue)}
+.meta{color:var(--muted);font-size:12px}
+.badge{display:inline-block;border-radius:5px;padding:1px 7px;font-size:12px;margin-right:6px}
+.single{background:#e0f2fe;color:#075985}.multi{background:#ede9fe;color:#5b21b6}.judge{background:#dcfce7;color:#166534}
+.ans{color:var(--green);font-weight:700;font-size:20px}
+.level{font-weight:700}.level.good{color:var(--green)}.level.mid{color:var(--orange)}.level.low{color:var(--muted)}
+.kv{margin:4px 0}.k{color:var(--muted);display:inline-block;min-width:74px;vertical-align:top}
+pre{white-space:pre-wrap;word-break:break-word;font:inherit;margin:0}
+.note{background:#fff7ed;border:1px solid #fed7aa;border-radius:8px;padding:9px;margin-top:10px;color:#9a3412}
+.answerbox{background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:10px 14px;margin:10px 0;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.answerbox .ansline{flex:1}
+.hint{background:#eff6ff;border:1px solid #bfdbfe;border-radius:8px;padding:9px;margin-bottom:12px;color:#1e40af;font-size:13px}
+.ok{color:var(--green)}.err{color:#b91c1c}
+code{background:#f1f5f9;border-radius:4px;padding:1px 5px;font-size:13px}
+@media(max-width:860px){.grid{grid-template-columns:1fr}.list{max-height:38vh}.searchbar{flex-wrap:wrap}button{padding:9px 12px}}
+</style>
+</head>
+<body>
+<header>
+  <h1>学法用法速查助手 <span class="tag">单文件离线版</span></h1>
+  <div class="sub" id="stats">题库加载中…</div>
+</header>
+<div class="wrap">
+  <div class="tabs">
+    <button class="tab on" data-p="p1">速查</button>
+    <button class="tab" data-p="p2">考试范围</button>
+    <button class="tab" data-p="p3">使用说明</button>
+  </div>
+
+  <section class="panel on" id="p1">
+    <div class="hint">复制题目后直接在这里按 <b>Ctrl+V</b>（手机长按粘贴），会自动查询。也可以手动输入关键词。</div>
+    <div class="searchbar">
+      <textarea id="q" rows="2" placeholder="粘贴整题或输入题干关键词，例如：诉讼时效期间为" autofocus></textarea>
+      <button class="primary" id="btn">查询</button>
+      <button id="clear">清空</button>
+    </div>
+    <div class="grid">
+      <div class="card"><ul class="list" id="results"></ul></div>
+      <div class="card" id="detail">左侧点一条题目，这里显示答案、依据与解析。</div>
+    </div>
+  </section>
+
+  <section class="panel" id="p2">
+    <div class="searchbar"><input type="text" id="lq" placeholder="法规名称关键词，如：民法典、宪法、纪律处分"></div>
+    <div class="card"><ul class="list" id="laws"></ul></div>
+  </section>
+
+  <section class="panel" id="p3">
+    <div class="card">
+      <h3>怎么用</h3>
+      <p>这是<b>一个文件</b>，不需要安装 Python、不需要联网、不需要终端。Windows 双击 <code>学法用法速查助手_单文件.html</code>，UOS 双击同一个文件，都会用浏览器打开。</p>
+      <p>在「速查」页粘贴题干或关键词，自动查询。带题号、带选项的整题复制也能识别；粘贴选项后，遇到题干几乎相同但选项顺序不同的题，会按选项文本挑出正确那条。</p>
+      <p>结果颜色：<span class="level good">可信</span> 可直接看答案；<span class="level mid">疑似</span> 核对题干；<span class="level low">参考</span> 只用关键词命中。</p>
+      <h3>快捷键</h3>
+      <p><code>Enter</code> 查询（输入多行时按 <code>Ctrl+Enter</code>）；<code>↑</code> / <code>↓</code> 在结果间切换；点「复制答案」直接拷走答案文字。</p>
+      <h3>题库范围</h3>
+      <p>内置通知附件3 的考试范围清单，以及从官方练习题库整理的题目。题库全部内嵌在本文件里，程序不向外发送任何题目。</p>
+      <h3>补库</h3>
+      <p>单文件版无法把新题写回自身。需要补库请用同目录的 Windows exe 版或 UOS 版，它们支持从 Excel 导入并保存到题库文件。</p>
+    </div>
+  </section>
+</div>
+
+<script>/*__SEARCH_JS__*/</script>
+<script>
+window.__BANK__=/*__BANK_JSON__*/;
+window.__LAWS__=/*__LAWS_JSON__*/;
+</script>
+<script>
+(function(){
+'use strict';
+var $=function(s){return document.querySelector(s)};
+var S=window.XuefaSearch;
+var bank=null,currentId=null,results=[],lawItems=[];
+function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
+function level(s){if(s>=0.62)return '<span class="level good">可信</span>';if(s>=0.40)return '<span class="level mid">疑似</span>';return '<span class="level low">参考</span>'}
+function tname(t){return S.typeName(t)}
+function renderList(){
+  var ul=$('#results');ul.innerHTML='';results.forEach(function(x,idx){
+    var q=x.q;
+    var li=document.createElement('li');
+    li.innerHTML='<div class="meta">'+level(x.score)+'<span class="badge '+esc(q.type)+'">'+esc(tname(q.type))+'</span>'+x.score.toFixed(3)+' · '+esc(q.id)+'</div><div>'+esc(q.stem)+'</div><div class="meta">答案：'+esc(S.answerText(q))+'</div>';
+    li.onclick=function(){select(idx)};
+    ul.appendChild(li);
+  });
+}
+function select(idx){
+  if(!results[idx])return;
+  currentId=results[idx].q.id;
+  Array.prototype.forEach.call($('#results').children,function(n,i){n.classList.toggle('sel',i===idx)});
+  showDetail(results[idx].q);
+}
+function showDetail(q){
+  if(!q){$('#detail').textContent='未找到题目';return}
+  var h='<div class="meta">'+esc(q.id)+' · '+esc(tname(q.type))+(q.caution?' · <span class="err">注意核对</span>':'')+'</div>';
+  h+='<h3>'+esc(q.stem)+'</h3>';
+  h+='<div class="answerbox"><div class="ansline"><span class="k">答案</span><span class="ans">'+esc(S.answerText(q))+'</span> <span class="meta">('+esc(q.answer)+')</span></div><button id="copyans">复制答案</button></div>';
+  var ks=Object.keys(q.options||{}).sort();
+  if(ks.length){h+='<p class="k">选项</p>';ks.forEach(function(k){h+='<div><span class="k">'+esc(k)+'</span><span>'+esc(q.options[k])+'</span></div>'})}
+  h+='<p><span class="k">依据</span><pre>'+esc(q.basis||'（题库未提供）')+'</pre></p>';
+  h+='<p><span class="k">关联法规</span>'+esc(q.law||'—')+'</p>';
+  if(q.analysis)h+='<p><span class="k">解析</span><pre>'+esc(q.analysis)+'</pre></p>';
+  h+='<p class="meta">来源：'+esc(q.source||'—')+'</p>';
+  if(q.caution)h+='<div class="note">提示：'+esc(q.caution)+'</div>';
+  $('#detail').innerHTML=h;
+  $('#copyans').onclick=function(){
+    var text=S.answerText(q), btn=this;
+    if(navigator.clipboard&&navigator.clipboard.writeText){
+      navigator.clipboard.writeText(text).then(
+        function(){btn.textContent='已复制'},
+        function(){fallbackCopy(text,btn)}
+      );
+    } else fallbackCopy(text,btn);
+  };
+}
+function fallbackCopy(text,btn){
+  var ta=document.createElement('textarea');ta.value=text;ta.style.position='fixed';ta.style.opacity='0';
+  document.body.appendChild(ta);ta.select();
+  try{document.execCommand('copy');btn.textContent='已复制'}catch(e){btn.textContent='复制失败，请手动选中'}
+  document.body.removeChild(ta);
+}
+function doSearch(){
+  var text=$('#q').value.trim();
+  if(!text){$('#results').innerHTML='';$('#detail').textContent='';return}
+  results=bank.search(text,10);
+  renderList();
+  if(!results.length){$('#results').innerHTML='<li class="meta">没有命中，换个关键词试试。</li>';$('#detail').textContent='';return}
+  select(0);
+}
+function renderLaws(){
+  var ul=$('#laws');ul.innerHTML='';
+  lawItems.forEach(function(x,i){
+    var li=document.createElement('li');
+    li.innerHTML='<span class="meta">'+(i+1)+'.</span> '+esc(x.name)+' <span class="meta">['+esc(x.category)+']</span>';
+    ul.appendChild(li);
+  });
+  if(!lawItems.length)ul.innerHTML='<li class="meta">没有匹配的法规。</li>';
+}
+function doLaws(){lawItems=bank.searchLaws($('#lq').value.trim(),382);renderLaws()}
+function init(){
+  bank=new S.Bank(window.__BANK__.questions||[],window.__LAWS__);
+  var cov=bank.lawCoverage();
+  var official=0;bank.questions.forEach(function(q){if((q.source||'').indexOf('官方题库')>=0)official++});
+  $('#stats').textContent='内置 '+bank.questions.length+' 题（官方 '+official+'）· 法规 '+cov.total+' 部，直接关联 '+cov.covered+' 部 · 完全离线';
+  document.querySelectorAll('.tab').forEach(function(b){b.onclick=function(){
+    document.querySelectorAll('.tab').forEach(function(x){x.classList.remove('on')});
+    document.querySelectorAll('.panel').forEach(function(x){x.classList.remove('on')});
+    b.classList.add('on');$('#'+b.dataset.p).classList.add('on');
+  }});
+  $('#btn').onclick=doSearch;
+  $('#clear').onclick=function(){$('#q').value='';$('#results').innerHTML='';$('#detail').textContent='';$('#q').focus()};
+  var timer=null;
+  $('#q').oninput=function(){clearTimeout(timer);timer=setTimeout(doSearch,300)};
+  $('#q').onpaste=function(){var self=this;setTimeout(function(){doSearch()},0)};
+  $('#q').onkeydown=function(e){
+    if(e.keyCode===13&&!e.ctrlKey&&!e.shiftKey){e.preventDefault();doSearch();return}
+    if(e.keyCode===13&&e.ctrlKey){e.preventDefault();doSearch();return}
+    if(e.keyCode===38){e.preventDefault();if(results.length)select(Math.max(0,currentIndex()-1))}
+    if(e.keyCode===40){e.preventDefault();if(results.length)select(Math.min(results.length-1,currentIndex()+1))}
+  };
+  function currentIndex(){for(var i=0;i<results.length;i++){if(String(results[i].q.id)===String(currentId))return i}return 0}
+  $('#lq').oninput=doLaws;
+  doLaws();
+}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
+})();
+</script>
+</body>
+</html>
