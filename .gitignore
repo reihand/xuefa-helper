@@ -1,0 +1,23 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# 构建产物由 build.py / build_fetcher.py 现场生成，不入库
+build/
+dist/
+*.spec
+
+# 题库备份与采集临时物
+backup/
+*.bak
+tools/cache/_frozen_test/
+tools/_probe/
+
+# 会话凭证、日志、个人信息残留
+*token*.txt
+*cookie*.txt
+*.log
+.DS_Store
+Thumbs.db

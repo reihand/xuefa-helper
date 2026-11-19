@@ -1,0 +1,22 @@
+广西普法网「我的练习」题库采集报告
+生成时间：2026-11-19 13:51:41
+站点：https://gxpf.sft.gxzf.gov.cn
+会话：有效（token 未写入本报告）
+
+采样请求：0 次
+ID 段：13720-19631, 56041866-56043943, 114039830-114042626, 114051441-114051776, 114052367-114052466, 114061506-114061515
+原始缓存题目：10302 道
+有效官方题目：9904 道（丢弃 3）
+题型：单选 5085 / 多选 2471 / 判断 2348
+带题目解析（接口原生 answerAnalysis）：6789 道
+精确关联附件3法规：7882 道
+段扫描截断：否
+总请求：1 次，失败重试累计：0 次
+
+原有题库：10196 道
+合并去重后：10196 道
+输出题库：D:\workbuddy\2026-11-19-11-47-12\xuefa_helper\src\data\questions.json
+纯官方题库：D:\workbuddy\2026-11-19-11-47-12\xuefa_helper\tools\official_questions.json
+原始缓存：D:\workbuddy\2026-11-19-11-47-12\xuefa_helper\tools\cache\raw_questions.json
+备份：D:\workbuddy\2026-11-19-11-47-12\xuefa_helper\src\data\questions.json.bak
+耗时：1.4 秒
