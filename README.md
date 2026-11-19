@@ -9,11 +9,11 @@
 
 ## 快速开始
 
-从 Releases 下载两个 exe，放同一目录：
+从 Releases 下载两个 exe，放同一目录。Release 资产名是 ASCII，下载后按需改名：
 
 ```
-学法用法速查助手.exe        双击启动，离线查题
-题库采集器.exe              双击更新题库，生成同目录 questions.json
+xuefa-helper.exe           → 学法用法速查助手.exe   双击启动，离线查题
+question-bank-fetcher.exe  → 题库采集器.exe         双击更新题库，生成同目录 questions.json
 题库采集器.exe --probe-only  只验证会话和接口
 ```
 
