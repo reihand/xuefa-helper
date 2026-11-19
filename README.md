@@ -26,14 +26,14 @@ Windows exe 不能在这类系统上运行。Releases 里提供纯 Python 离线
 目标机只要有 Python 3.7+ 和浏览器，不需要安装第三方库。
 
 ```bash
-sh 学法用法速查助手_UOS_arm64.run        # 自解压到当前目录的 xuefa-uos-arm64/
+sh xuefa-helper-uos-arm64.run             # 自解压到当前目录的 xuefa-uos-arm64/
 sh xuefa-uos-arm64/启动速查.sh           # 自动打开本地浏览器页面
 sh xuefa-uos-arm64/命令行查询.sh "题干"   # 不开浏览器，直接出答案
 sh xuefa-uos-arm64/生成桌面快捷方式.sh    # 桌面图标
 sh xuefa-uos-arm64/自检.sh               # 预期第一行含 1.000 | Q9924 | C
 ```
 
-也可以下载 `.tar.gz` 手动解压。页面支持粘贴整题、关键词模糊查、答案与依据展示、
+也可以下载 `xuefa-helper-uos-arm64.tar.gz` 手动解压。页面支持粘贴整题、关键词模糊查、答案与依据展示、
 382 部法规浏览、Excel 导入补库。服务只监听 127.0.0.1，题库不出本机。
 源码在 `src/webui.py`，打包命令 `python build_uos.py`。
 
